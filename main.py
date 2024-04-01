@@ -144,12 +144,13 @@ class Simulator:
         def features(self) -> numpy.ndarray: ...
 
 
-def plot_cluster(identifier: int, color: typing.List[int]) -> None:
+def plot_cluster(identifier: int, color: typing.List[int], label: str = "") -> None:
     matplotlib.pyplot.scatter(
         numpy.extract(dataset[0, :] == identifier, dataset[1, :]),
         numpy.extract(dataset[0, :] == identifier, dataset[2, :]),
         color=color,
         alpha=0.1,
+        label=label,
     )
 
 
@@ -226,16 +227,17 @@ if __name__ == "__main__":
     )
 
     # Generate the dataset
-    NUMBER_OF_SCANS = 2000
+    NUMBER_OF_SCANS = 200
     simulator = Simulator([clutter, target_a, target_b], NUMBER_OF_SCANS)
     dataset = simulator.run_simulation()
 
     # Visualize the dataset
     matplotlib.pyplot.subplot(2, 1, 1)
-    plot_cluster(0, [1, 0, 0])
-    plot_cluster(1, [0, 1, 0])
-    plot_cluster(2, [0, 0, 1])
+    plot_cluster(0, [1, 0, 0], "Clutter")
+    plot_cluster(1, [0, 1, 0], "Target A")
+    plot_cluster(2, [0, 0, 1], "Target B")
     matplotlib.pyplot.grid()
+    matplotlib.pyplot.legend()
     matplotlib.pyplot.title("Dataset Colored By Cluster")
     matplotlib.pyplot.xlabel("Size")
     matplotlib.pyplot.ylabel("Intensity")
